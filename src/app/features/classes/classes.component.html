@@ -1,0 +1,115 @@
+<header class="mr-10">
+  <div class="flex items-center justify-between py-4">
+    <div class="flex items-center gap-4">
+      <h1 class="text-md font-medium text-gray-600">Datasets</h1>
+    </div>
+    <!-- <app-add-dataset /> -->
+  </div>
+</header>
+
+<div class="bg-white rounded-lg shadow-2xl h-full mb-10 mr-10">
+  <!-- <div class="flex justify-between items-center border-b pb-4 mb-4">
+    <h1 class="text-xl font-bold">Create Project</h1>
+    <div>
+      <button class="bg-red-500 text-white px-4 py-2 rounded-md mr-2">
+        Delete
+      </button>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+    </div>
+  </div> -->
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+    <!-- Left Panel -->
+    <div>
+      <h2 class="text-sm font-semibold mb-2">Labeling Interface</h2>
+      <!-- <button class="border px-4 py-2 rounded-md text-gray-600">
+        Browse Templates
+      </button> -->
+
+      <!-- <div class="mt-4">
+        <label class="block font-semibold">Configure data</label>
+        <div class="flex items-center mt-2">
+          <select class="border rounded-md px-2 py-2 mr-2">
+            <option value="manual">Set manually</option>
+          </select>
+          <input
+            type="text"
+            placeholder="$image"
+            class="border px-3 py-2 rounded-md w-full"
+          />
+        </div>
+      </div> -->
+
+      <div class="mt-4">
+        <label class="block font-semibold">Add choices</label>
+        <input
+          class="border w-full px-3 py-2 rounded-md"
+          placeholder="Enter labels..."
+        />
+        <button class="mt-2 bg-gray-700 text-white px-4 py-2 rounded-md">
+          Add
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <label class="block font-semibold">Choices (3)</label>
+        <ul class="list-disc pl-5">
+          <li>Moderate</li>
+        </ul>
+      </div>
+
+      <div class="mt-4">
+        <label class="block font-semibold">Configure settings</label>
+        <!-- <div class="mt-2">
+          <label class="block">Width of region borders</label>
+          <input
+            type="number"
+            class="border px-2 py-1 rounded-md w-full"
+            value="1"
+          />
+        </div> -->
+        <div class="mt-2">
+          <label class="inline-flex items-center">
+            <input type="checkbox" checked class="mr-2" /> Allow image zoom
+            (ctrl+wheel)
+          </label>
+        </div>
+        <div>
+          <label class="inline-flex items-center">
+            <input type="checkbox" checked class="mr-2" /> Show controls to zoom
+            in and out
+          </label>
+        </div>
+        <div>
+          <label class="inline-flex items-center">
+            <input type="checkbox" checked class="mr-2" /> Show controls to
+            rotate image
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div>
+      <h2 class="text-lg font-semibold mb-2">UI Preview</h2>
+      <div class="border rounded-lg overflow-hidden">
+        <img
+          src="/assets/images/1663_right.jpeg"
+          alt="Preview"
+          class="w-full"
+        />
+      </div>
+      <!-- <div class="mt-4">
+        <label class="inline-flex items-center">
+          <input type="checkbox" class="mr-2" /> Adult content
+        </label>
+        <label class="inline-flex items-center block mt-2">
+          <input type="checkbox" class="mr-2" /> Weapons
+        </label>
+        <label class="inline-flex items-center block mt-2">
+          <input type="checkbox" class="mr-2" /> Violence
+        </label>
+      </div> -->
+    </div>
+  </div>
+</div>

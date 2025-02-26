@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+/* @layer tailwind-base, primeng, tailwind-utilities;
+@layer tailwind-base {
+  @import "tailwindcss/preflight";
+}
+@layer primeng;
+@layer tailwind-utilities {
+  @tailwind utilities;
+  @tailwind utilities;
+} */
+@import "tailwindcss";
+
+html {
+  background-color: #F2F2F2;
+}
+
+.p-dialog-title {
+  font-weight: var(--p-dialog-title-font-weight);
+  font-size: 1rem !important;
+}

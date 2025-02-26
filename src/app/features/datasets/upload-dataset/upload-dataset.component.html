@@ -1,0 +1,75 @@
+<div class="card flex justify-center">
+  <p-button (click)="showDialog()" label="Upload Dataset" />
+  <p-dialog
+    header="Add Data to the Dataset Diabetic Retinopathy"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '60%' }"
+  >
+    <div class="flex flex-col md:flex-row p-6 gap-6">
+      <!-- Left side - File Upload Area -->
+      <div
+        class="flex-1 border border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center"
+        (drop)="onFilesDrop($event)"
+        (dragover)="onDragOver($event)"
+      >
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-10 w-10 text-gray-400 mx-auto"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
+          </svg>
+        </div>
+        <div class="text-center">
+          <a href="#" class="text-blue-500 font-medium hover:underline"
+            >Click to upload</a
+          >
+          <span class="text-gray-600"> or drag & drop</span>
+          <p class="mt-4 text-sm text-gray-500">
+            Supported Filetypes: {{ supportedFileTypes.join(", ") }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex-1 bg-gray-50 rounded-lg p-6">
+        <div class="mt-8 space-y-3">
+          <div *ngFor="let fileType of uploadedFiles" class="flex items-center">
+            <div
+              class="w-4 h-4 rounded-full border border-gray-300 mr-2 flex-shrink-0"
+            ></div>
+            <span class="flex-1 text-sm text-gray-700">{{
+              fileType.name
+            }}</span>
+            <span class="text-sm text-gray-600"
+              >{{ fileType.count }} of {{ fileType.used }} used</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 bg-gray-50 flex justify-end items-center gap-4">
+      <button
+        (click)="onClose()"
+        class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md focus:outline-none"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="uploadFiles()"
+        class="px-4 py-2 bg-gray-200 text-gray-600 rounded-md hover:bg-gray-300 focus:outline-none"
+      >
+        Upload 0 files
+      </button>
+    </div>
+  </p-dialog>
+</div>

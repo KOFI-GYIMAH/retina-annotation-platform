@@ -1,0 +1,171 @@
+<h1 class="text-md font-bold text-gray-900">Members</h1>
+<p class="mt-1 text-sm text-gray-500">
+  Manage members and users of your workspace and set their access level.
+</p>
+
+<div class="mt-8 border-b border-gray-200">
+  <div class="flex -mb-px">
+    <button
+      (click)="setActiveTab('All Members')"
+      [ngClass]="{
+        'text-blue-600 border-blue-500': activeTab === 'All Members',
+        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
+          activeTab !== 'All Members'
+      }"
+      class="px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
+    >
+      All Members
+    </button>
+
+    <button
+      (click)="setActiveTab('Owner')"
+      [ngClass]="{
+        'text-blue-600 border-blue-500': activeTab === 'Owner',
+        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
+          activeTab !== 'Owner'
+      }"
+      class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
+    >
+      Owner
+    </button>
+
+    <button
+      (click)="setActiveTab('Admin')"
+      [ngClass]="{
+        'text-blue-600 border-blue-500': activeTab === 'Admin',
+        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
+          activeTab !== 'Admin'
+      }"
+      class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
+    >
+      Admin
+    </button>
+
+    <button
+      (click)="setActiveTab('User')"
+      [ngClass]="{
+        'text-blue-600 border-blue-500': activeTab === 'User',
+        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
+          activeTab !== 'User'
+      }"
+      class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
+    >
+      User
+    </button>
+
+    <button
+      (click)="setActiveTab('ophthalmologist')"
+      [ngClass]="{
+        'text-blue-600 border-blue-500': activeTab === 'ophthalmologist',
+        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
+          activeTab !== 'ophthalmologist'
+      }"
+      class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
+    >
+      Ophthalmologist
+    </button>
+  </div>
+</div>
+
+<div class="mt-5 bg-[#FAFAFA] rounded-lg shadow--sm p-6">
+  <h2 class="text-sm font-medium text-gray-900">Invite members</h2>
+  <p class="mt-1 text-[0.795rem] text-gray-500">
+    Invite new members to your team
+  </p>
+
+  <div class="mt-4 flex gap-5">
+    <input
+      #emailInput
+      type="email"
+      placeholder="Email address (Press Enter to send the invite)"
+      class="flex-1 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      (keyup.enter)="sendInvite(emailInput.value); emailInput.value = ''"
+    />
+
+    <div class="relative">
+      <select
+        [(ngModel)]="newMemberRole"
+        class="appearance-none h-full px-4 py-2 bg-white rounded-md border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+        <option value="Ophthalmologist">Ophthalmologist</option>
+      </select>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      >
+        <svg
+          class="fill-current h-4 w-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <button
+      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      (click)="sendInvite(emailInput.value); emailInput.value = ''"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Members List -->
+<div class="mt-6">
+  <div
+    *ngFor="let member of getFilteredMembers()"
+    class="flex items-center py-4 border-b border-gray-200"
+  >
+    <div
+      class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white"
+    >
+      {{ member.initials }}
+    </div>
+    <div class="ml-4 flex-1">
+      <h3 class="text-sm font-medium text-gray-900">
+        {{ member.name }}
+      </h3>
+      <p class="text-sm text-gray-500">{{ member.email }}</p>
+    </div>
+    <div class="relative">
+      <select
+        [(ngModel)]="member.role"
+        class="appearance-none px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="Owner">Owner</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+        <option value="Ophthalmologist">Ophthalmologist</option>
+      </select>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      >
+        <svg
+          class="fill-current h-4 w-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

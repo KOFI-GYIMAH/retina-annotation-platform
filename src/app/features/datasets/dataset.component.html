@@ -1,0 +1,155 @@
+<header class="mr-10">
+  <div class="flex items-center justify-between py-4">
+    <div class="flex items-center gap-4">
+      <h1 class="text-md font-medium text-gray-600">Datasets</h1>
+    </div>
+    <app-add-dataset />
+  </div>
+</header>
+
+<div class="bg-white rounded-lg shadow-2xl h-full mb-10 mr-10">
+  <div class="flex items-center gap-5 py-3 px-6">
+    <div>
+      <input
+        type="text"
+        placeholder="Search Datasets"
+        class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+      />
+      <!-- <svg
+        class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg> -->
+    </div>
+    <select
+      class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+    >
+      <option>Date created</option>
+      <option>Name</option>
+      <option>Size</option>
+    </select>
+  </div>
+
+  <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <a
+      [routerLink]="['/datasets', 12345]"
+      class="bg-white rounded-lg border border-gray-200 overflow-hidden"
+    >
+      <div class="bg-gray-100 p-4 flex items--center justify--center">
+        <div class="grid grid-cols-3 gap-2">
+          <img
+            src="/assets/images/16_left (1).jpeg"
+            alt="Sample 1"
+            class="rounded"
+          />
+          <img
+            src="/assets/images/16_left.jpeg"
+            alt="Sample 2"
+            class="rounded"
+          />
+          <img
+            src="/assets/images/1663_right.jpeg"
+            alt="Sample 3"
+            class="rounded"
+          />
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold">Diabetic Retinopathy</h3>
+          <button class="text-gray-400 hover:text-gray-600">
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-gray-600">
+          <span class="flex items-center gap-1">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            7 Items
+          </span>
+          <span class="flex items-center gap-1">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+            0 Classes
+          </span>
+        </div>
+        <div class="mt-4 bg-gray-100 rounded-full h-2">
+          <div class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+        </div>
+      </div>
+    </a>
+
+    <div
+      class="bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-center p-6 gap-4"
+    >
+      <div
+        class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center"
+      >
+        <svg
+          class="w-6 h-6 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </div>
+      <div class="text-center">
+        <p class="text-sm text-gray-600">Create a dataset</p>
+        <p class="text-sm text-gray-600">to add training data</p>
+      </div>
+      <button
+        class="mt-2 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-700 hover:bg-gray-200"
+      >
+        + New dataset
+      </button>
+    </div>
+  </div>
+</div>

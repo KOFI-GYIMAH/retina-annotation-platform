@@ -1,0 +1,92 @@
+<div class="flex">
+  <div class="w-64 h-[calc(80vh-3.5rem)] bg-[#FAFAFA] text-sm">
+    <div>
+      <div
+        class="flex items-center px-2 py-3 cursor-pointer"
+        [ngClass]="{
+          'bg-blue-50 text-blue-600': activeTab === 'profile',
+          'text-gray-700 hover:bg-gray-100': activeTab !== 'profile'
+        }"
+        (click)="activeTab = 'profile'"
+      >
+        <div
+          class="w-7 h-7 bg-purple-500 rounded-full flex items-center justify-center text-white"
+        >
+          SG
+        </div>
+        <span class="ml-3 text-gray-700">Samuel Gyimah</span>
+      </div>
+
+      <div
+        class="flex items-center px-2 py-3 cursor-pointer"
+        [ngClass]="{
+          'bg-blue-50 text-blue-600': activeTab === 'workspace',
+          'text-gray-700 hover:bg-gray-100': activeTab !== 'workspace'
+        }"
+        (click)="activeTab = 'workspace'"
+      >
+        <div
+          class="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center text-white"
+        >
+          VA
+        </div>
+        <span class="ml-3 text-gray-700">VIDA Annotator</span>
+      </div>
+
+      <div
+        class="flex items-center px-2 py-3 cursor-pointer"
+        [ngClass]="{
+          'bg-blue-50 text-blue-600': activeTab === 'members',
+          'text-gray-700 hover:bg-gray-100': activeTab !== 'members'
+        }"
+        (click)="activeTab = 'members'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-3"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+        Members
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 w-64 border-t border-gray-200">
+      <button
+        class="flex items-center px-2 py-4 w-full text-gray-700 hover:bg-gray-100"
+        (click)="logout()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-3"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+        Log Out
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 px-8">
+    <app-members *ngIf="activeTab === 'members'" />
+    <app-profile *ngIf="activeTab === 'profile'" />
+    <app-workspace *ngIf="activeTab === 'workspace'" />
+  </div>
+</div>

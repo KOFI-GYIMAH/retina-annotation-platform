@@ -1,0 +1,177 @@
+<div>
+  <h1 class="text-md font-bold text-gray-900">Personal profile</h1>
+  <p class="mt-1 text-sm text-gray-500">
+    This profile is your global profile, that is used in any team you are part
+    of.
+  </p>
+</div>
+
+<div class="space-y-4 mt-8">
+  <h2 class="text-md font-semibold">Details</h2>
+  <p class="text-sm text-gray-500">
+    Update your information and manage your account settings.
+  </p>
+
+  <!-- Avatar -->
+  <div class="relative w-16 h-16">
+    <div
+      class="bg-emerald-300 w-full h-full rounded-lg flex items-center justify-center text-xl"
+    >
+      SG
+    </div>
+    <button
+      class="absolute -bottom-1 -right-1 p-1 bg-white rounded-full border shadow-sm"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="profileForm" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <label class="text-sm text-gray-600">First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          pInputText
+          class="w-full"
+        />
+      </div>
+      <div class="space-y-2">
+        <label class="text-sm text-gray-600">Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          pInputText
+          class="w-full"
+        />
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-sm text-gray-600">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        pInputText
+        class="w-full"
+        readonly
+      />
+    </div>
+
+    <div class="text-sm text-gray-500">
+      Account created on <span class="font-bold">Feb 17, 2025</span>
+    </div>
+
+    <!-- Password Section -->
+    <!-- <div class="flex items-center justify-between py-4 border-t">
+      <div>
+        <h3 class="font-medium">Password</h3>
+        <p class="text-sm text-gray-500">Edit your password</p>
+      </div>
+      <button
+        type="button"
+        class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+      >
+        Edit password
+      </button>
+    </div> -->
+
+    <!-- 2FA Section -->
+    <!-- <div class="flex items-center justify-between py-4 border-t">
+      <div class="flex-1">
+        <h3 class="font-medium">Two-factor authentication (2FA)</h3>
+        <p class="text-sm text-gray-500">
+          Add an extra layer of security to your account by requiring a
+          verification code when you log in.
+        </p>
+      </div>
+      <div class="flex items-center gap-4">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            formControlName="twoFactor"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+          ></div>
+        </label>
+        <button
+          type="button"
+          class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+        >
+          Configure 2FA
+        </button>
+      </div>
+    </div> -->
+
+    <!-- Email Notifications -->
+    <!-- <div class="flex items-center justify-between py-4 border-t">
+      <div>
+        <h3 class="font-medium">Receive email notifications</h3>
+        <p class="text-sm text-gray-500">
+          If you opt-out, you will only receive in-app notifications
+        </p>
+      </div>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          formControlName="emailNotifications"
+          class="sr-only peer"
+        />
+        <div
+          class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+        ></div>
+      </label>
+    </div> -->
+
+    <!-- Delete Account -->
+    <div class="py-10 border-t border-gray-300">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-medium text-red-600">Delete account</h3>
+          <p class="text-sm text-gray-500">
+            This is irreversible and will delete your personal account
+          </p>
+        </div>
+        <button
+          type="button"
+          class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          Delete My Account
+        </button>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-300">
+      <button
+        type="button"
+        class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+      >
+        Close
+      </button>
+      <button
+        type="submit"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

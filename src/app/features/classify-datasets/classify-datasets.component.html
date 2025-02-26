@@ -1,0 +1,213 @@
+<div class="flex h-screen bg-gray-100">
+  <!-- Thumbnail sidebar -->
+  <div class="w-24 bg-white p-2 space-y-2">
+    <h5 class="text-sm font-medium text-center">4 Images</h5>
+    <div
+      *ngFor="let image of images; let i = index"
+      [class.border-blue-500]="selectedIndex === i"
+      class="relative border-2 rounded cursor-pointer hover:opacity-80"
+      (click)="selectImage(i)"
+    >
+      <img [src]="image.url" alt="Thumbnail" class="w-full h-auto" />
+      <div class="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs">
+        {{ i + 1 }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Main viewer -->
+  <div class="flex-1 relative">
+    <!-- Top toolbar -->
+    <div
+      class="absolute top-0 left-0 right-0 bg-white border-b border-gray-200 p-2 flex items-center justify-between"
+    >
+      <div class="flex space-x-4">
+        <button (click)="zoomIn()" class="p-2 rounded hover:bg-gray-100">
+          <i class="pi pi-search-plus"></i>
+        </button>
+        <button (click)="zoomOut()" class="p-2 rounded hover:bg-gray-100">
+          <i class="pi pi-search-minus"></i>
+        </button>
+        <button (click)="resetView()" class="p-2 rounded hover:bg-gray-100">
+          <i class="pi pi-sync"></i>
+        </button>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold">
+          Diabetic Retinopathy - Kumasi Regional Hospital
+        </h3>
+      </div>
+
+      <div class="flex items-center justify-center">
+        <button
+          (click)="previousImage()"
+          [disabled]="selectedIndex === 0"
+          class="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+        >
+          <i class="pi pi-chevron-left text-gray-600 text-lg"></i>
+        </button>
+
+        <div
+          class="flex items-center space-x-2 min-w-[80px] justify-center text-sm"
+        >
+          <span class="font-semibold text-gray-700">
+            {{ selectedIndex + 1 }}
+          </span>
+          <span class="text-gray-400 font-medium">/</span>
+          <span class="text-gray-500 font-medium">
+            {{ images.length }}
+          </span>
+        </div>
+
+        <button
+          (click)="nextImage()"
+          [disabled]="selectedIndex === images.length - 1"
+          class="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+        >
+          <i class="pi pi-chevron-right text-gray-600 text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Image container -->
+    <div
+      #imageContainer
+      class="absolute inset-0 mt-12 bg-black overflow-hidden"
+      (mousedown)="startPan($event)"
+      (mousemove)="pan($event)"
+      (mouseup)="endPan()"
+      (mouseleave)="endPan()"
+      (wheel)="onWheel($event)"
+    >
+      <img
+        #mainImage
+        [src]="selectedImage"
+        alt="Medical image"
+        class="w-full h-full object-contain transform origin-center transition-transform duration-150"
+        [style.transform]="getTransform()"
+        draggable="false"
+      />
+    </div>
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="w-64 bg-white border-l border-gray-100 shadow-lg p-6 flex flex-col h-full">
+    <div class="flex-1 space-y-6">
+      <!-- Assessment Section -->
+      <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+        <h3
+          class="text-[0.7rem] font-medium text-gray-700 uppercase tracking-wide mb-4"
+        >
+          Severity Assessment
+        </h3>
+
+        <!-- Mild Radio -->
+        <div class="group flex items-center">
+          <div class="relative flex items-center">
+            <input
+              type="radio"
+              id="mild"
+              name="severity"
+              [value]="'mild'"
+              [(ngModel)]="currentImage.severity"
+              class="w-5 h-5 border-2 border-gray-300 checked:border-blue-500 checked:bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+            />
+            <label
+              for="mild"
+              class="ml-3 text-gray-700 font-medium group-hover:text-gray-900 transition-colors duration-200"
+            >
+              Mild
+              <sup class="text-blue-600 font-bold">[1]</sup>
+            </label>
+          </div>
+        </div>
+
+        <!-- Moderate Radio -->
+        <div class="group flex items-center">
+          <div class="relative flex items-center">
+            <input
+              type="radio"
+              id="moderate"
+              name="severity"
+              [value]="'moderate'"
+              [(ngModel)]="currentImage.severity"
+              class="w-5 h-5 border-2 border-gray-300 checked:border-blue-500 checked:bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+            />
+            <label
+              for="moderate"
+              class="ml-3 text-gray-700 font-medium group-hover:text-gray-900 transition-colors duration-200"
+            >
+              Moderate
+              <sup class="text-blue-600 font-bold">[2]</sup>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="space-y-3">
+        <label
+          for="comment"
+          class="block text-[0.7rem] font-bold text-gray-700 uppercase tracking-wide"
+        >
+          Comments (Optional)
+        </label>
+        <div class="relative">
+          <textarea
+            id="comment"
+            [(ngModel)]="currentImage.comment"
+            class="w-full h-30 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-700 placeholder-gray-400 transition-all duration-200"
+            placeholder="Add any additional observations here..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        (click)="onSubmit()"
+        class="w-full bg-blue-600 text-white rounded-xl py-3 px-4 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform active:scale-98 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="!currentImage.severity"
+      >
+        <div class="flex items-center justify-center space-x-2">
+          <span>Submit Assessment</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <div class="pt-6 mt-auto border-t border-gray-100">
+      <a
+        href="/datasets"
+        class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        Back to home
+      </a>
+    </div>
+  </div>
+</div>
