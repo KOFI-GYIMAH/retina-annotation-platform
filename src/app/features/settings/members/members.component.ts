@@ -1,8 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthService } from '@services/api/auth.service';
+import type { WorkspaceMembers } from '@shared/models';
+import { loadWorkspaceMembers } from '@store/workspace/workspace.actions';
+import { selectWorkspaceMembers } from '@store/workspace/workspace.selectors';
 
 interface Member {
   id: number;
@@ -14,11 +24,19 @@ interface Member {
 
 @Component({
   selector: 'app-members',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './members.component.html',
   styleUrl: './members.component.css',
 })
-export class MembersComponent {
+export class MembersComponent implements OnInit {
+  workforceMembers: WorkspaceMembers[] = [];
+  sendingInvite = false;
+
+  sendInviteForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    role: new FormControl('Admin', [Validators.required]),
+  });
+
   activeTab: 'All Members' | 'Owner' | 'Admin' | 'User' | 'ophthalmologist' =
     'All Members';
   members: Member[] = [
@@ -37,13 +55,19 @@ export class MembersComponent {
       initials: 'A',
     },
   ];
-  newMemberRole: 'Owner' | 'Admin' | 'User' | 'ophthalmologist' | 'Worker' =
-    'Admin';
 
   constructor(
     private authService: AuthService,
-    private toast: HotToastService
+    private toast: HotToastService,
+    private store: Store
   ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(loadWorkspaceMembers());
+    this.store.select(selectWorkspaceMembers).subscribe((members) => {
+      this.workforceMembers = members;
+    });
+  }
 
   setActiveTab(
     tab: 'All Members' | 'Owner' | 'Admin' | 'User' | 'ophthalmologist'
@@ -59,23 +83,23 @@ export class MembersComponent {
     }
   }
 
-  sendInvite(email: string): void {
-    const payload = {
-      email,
-      role: this.newMemberRole,
-    };
-    console.log(payload);
-    if (email && this.newMemberRole) {
-      this.authService.sendInvite(payload).subscribe({
-        next: (res) => {
-          this.toast.success('Invite sent successfully');
-          console.log(res);
-        },
-        error: (err) => {
-          this.toast.error('Something went wrong');
-          console.log(err);
-        },
-      });
-    }
+  sendInvite(): void {
+    console.log(this.sendInviteForm.value);
+    if (this.sendInviteForm.invalid) return;
+    this.sendingInvite = true;
+
+    this.authService.sendInvite(this.sendInviteForm.value).subscribe({
+      next: (res) => {
+        this.sendingInvite = false;
+        this.store.dispatch(loadWorkspaceMembers());
+        this.toast.success('Invite sent successfully');
+        console.log(res);
+      },
+      error: (err) => {
+        this.sendingInvite = false;
+        this.toast.error('Something went wrong');
+        console.log(err);
+      },
+    });
   }
 }

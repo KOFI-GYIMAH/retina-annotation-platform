@@ -45,7 +45,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
-        path: 'classify',
+        path: 'datasets/classify/:id',
         component: ClassifyDatasetsComponent,
       },
       {

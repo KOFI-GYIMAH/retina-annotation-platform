@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-workspace',
@@ -9,5 +9,13 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './workspace.component.css',
 })
 export class WorkspaceComponent {
-  workspaceForm: FormGroup = new FormGroup({});
+  workspaceForm: FormGroup = this.fb.group({
+    name: ['ECL Retina Workspace'],
+    lastName: ['Gyimah'],
+    email: ['sk.gyimah@andurar.com'],
+    twoFactor: [false],
+    emailNotifications: [true],
+  });
+
+  constructor(private fb: FormBuilder) {}
 }

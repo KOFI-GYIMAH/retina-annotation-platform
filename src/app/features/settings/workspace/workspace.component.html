@@ -1,5 +1,5 @@
 <div>
-  <h1 class="text-md font-bold text-gray-900">Personal profile</h1>
+  <h1 class="text-md font-bold text-gray-900">Workspace Settings</h1>
   <p class="mt-1 text-sm text-gray-500">
     This profile is your global profile, that is used in any team you are part
     of.
@@ -12,12 +12,11 @@
     Update your information and manage your account settings.
   </p>
 
-  <!-- Avatar -->
   <div class="relative w-16 h-16">
     <div
       class="bg-emerald-300 w-full h-full rounded-lg flex items-center justify-center text-xl"
     >
-      SG
+      EW
     </div>
     <button
       class="absolute -bottom-1 -right-1 p-1 bg-white rounded-full border shadow-sm"
@@ -39,51 +38,22 @@
     </button>
   </div>
 
-  <!-- Form -->
   <form [formGroup]="workspaceForm" class="space-y-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="space-y-2">
-        <label class="text-sm text-gray-600">First Name</label>
-        <input
-          type="text"
-          formControlName="firstName"
-          pInputText
-          class="w-full"
-        />
-      </div>
-      <div class="space-y-2">
-        <label class="text-sm text-gray-600">Last Name</label>
-        <input
-          type="text"
-          formControlName="lastName"
-          pInputText
-          class="w-full"
-        />
-      </div>
-    </div>
-
     <div class="space-y-2">
-      <label class="text-sm text-gray-600">Email</label>
-      <input
-        type="email"
-        formControlName="email"
-        pInputText
-        class="w-full"
-        readonly
-      />
+      <label class="text-sm text-gray-600">Workspace Name</label>
+      <input type="text" formControlName="name" pInputText class="w-full" />
     </div>
 
     <div class="text-sm text-gray-500">
       Account created on <span class="font-bold">Feb 17, 2025</span>
     </div>
 
-    <!-- Delete Account -->
     <div class="py-10 border-t border-gray-300">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="font-medium text-red-600">Delete account</h3>
+          <h3 class="font-medium text-red-600">Delete workspace</h3>
           <p class="text-sm text-gray-500">
-            This is irreversible and will delete your personal account
+            This is irreversible and will delete your workspace account
           </p>
         </div>
         <button
@@ -95,8 +65,9 @@
       </div>
     </div>
 
-    <!-- Form Actions -->
-    <div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-300">
+    <div
+      class="flex items-center justify-end gap-4 pt-4 border-t border-gray-300"
+    >
       <button
         type="button"
         class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"

@@ -73,18 +73,21 @@
     Invite new members to your team
   </p>
 
-  <div class="mt-4 flex gap-5">
+  <form
+    class="mt-4 flex gap-5"
+    [formGroup]="sendInviteForm"
+    (ngSubmit)="sendInvite()"
+  >
     <input
-      #emailInput
+      formControlName="email"
       type="email"
       placeholder="Email address (Press Enter to send the invite)"
       class="flex-1 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      (keyup.enter)="sendInvite(emailInput.value); emailInput.value = ''"
     />
 
     <div class="relative">
       <select
-        [(ngModel)]="newMemberRole"
+        formControlName="role"
         class="appearance-none h-full px-4 py-2 bg-white rounded-md border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
         <option value="Admin">Admin</option>
@@ -108,7 +111,6 @@
 
     <button
       class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      (click)="sendInvite(emailInput.value); emailInput.value = ''"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +125,7 @@
         />
       </svg>
     </button>
-  </div>
+  </form>
 </div>
 
 <!-- Members List -->

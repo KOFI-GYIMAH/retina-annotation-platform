@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { InputTextModule } from 'primeng/inputtext';
+import { Component, type OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { LocalStorageService } from '@services/common/local-storage.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   profileForm: FormGroup = this.fb.group({
     firstName: ['Samuel'],
     lastName: ['Gyimah'],
@@ -18,5 +19,15 @@ export class ProfileComponent {
     emailNotifications: [true],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private localStorageService: LocalStorageService
+  ) {}
+
+  ngOnInit(): void {
+    const user = this.localStorageService.getItem('user');
+    if (user) {
+      this.profileForm.patchValue(user);
+    }
+  }
 }

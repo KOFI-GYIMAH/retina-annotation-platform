@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { UploadDatasetComponent } from '../upload-dataset/upload-dataset.component';
 
 interface ImageItem {
@@ -18,24 +19,11 @@ interface FilterOption {
 
 @Component({
   selector: 'app-dataset-details',
-  imports: [CommonModule, FormsModule, UploadDatasetComponent],
+  imports: [CommonModule, FormsModule, UploadDatasetComponent, RouterLink],
   templateUrl: './dataset-details.component.html',
   styleUrl: './dataset-details.component.css',
 })
 export class DatasetDetailsComponent implements OnInit {
-  showFolders: boolean = false;
-  selectedCount = 2;
-  currentUser = {
-    name: 'Samuel Gyimah',
-    initials: 'SG',
-    avatarColor: 'bg-purple-300',
-  };
-  searchValue = '';
-
-  toggleFolders() {
-    this.showFolders = !this.showFolders;
-  }
-
   images: ImageItem[] = [];
 
   ngOnInit() {
@@ -381,45 +369,5 @@ export class DatasetDetailsComponent implements OnInit {
 
   toggleSelection(image: ImageItem) {
     image.selected = !image.selected;
-  }
-  activeWorkflow: string = 'Diabetic Retinopathy';
-  statusFilters: FilterOption[] = [
-    { name: 'All', count: 7 },
-    { name: 'Complete', icon: 'check-circle' },
-    { name: 'New', count: 7 },
-    { name: 'Being annotated', icon: 'pencil' },
-    { name: 'In Review', icon: 'clipboard' },
-    { name: 'Processing', icon: 'refresh' },
-    { name: 'Uploading', icon: 'cloud-upload' },
-  ];
-
-  issuesFilters: FilterOption[] = [{ name: 'All comments', count: 0 }];
-
-  clearSelection(): void {
-    this.selectedCount = 0;
-  }
-
-  assignToUser(): void {
-    console.log('Assign to user action');
-  }
-
-  changeStage(): void {
-    console.log('Change stage action');
-  }
-
-  addTag(): void {
-    console.log('Add tag action');
-  }
-
-  moveToFolder(): void {
-    console.log('Move to folder action');
-  }
-
-  setPriority(): void {
-    console.log('Set priority action');
-  }
-
-  archiveItems(): void {
-    console.log('Archive items action');
   }
 }
