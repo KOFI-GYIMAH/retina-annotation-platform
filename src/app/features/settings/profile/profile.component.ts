@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LocalStorageService } from '@services/common/local-storage.service';
+import type { User } from '@shared/models';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -11,10 +12,12 @@ import { InputTextModule } from 'primeng/inputtext';
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit {
+  user: User = {} as User;
+
   profileForm: FormGroup = this.fb.group({
-    firstName: ['Samuel'],
-    lastName: ['Gyimah'],
-    email: ['sk.gyimah@andurar.com'],
+    firstName: [''],
+    lastName: [''],
+    email: [''],
     twoFactor: [false],
     emailNotifications: [true],
   });
@@ -28,6 +31,7 @@ export class ProfileComponent implements OnInit {
     const user = this.localStorageService.getItem('user');
     if (user) {
       this.profileForm.patchValue(user);
+      this.user = user;
     }
   }
 }

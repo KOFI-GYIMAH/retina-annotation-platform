@@ -10,17 +10,10 @@ import {
 import { Store } from '@ngrx/store';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthService } from '@services/api/auth.service';
+import { UserService } from '@services/api/user.service';
 import type { WorkspaceMembers } from '@shared/models';
 import { loadWorkspaceMembers } from '@store/workspace/workspace.actions';
 import { selectWorkspaceMembers } from '@store/workspace/workspace.selectors';
-
-interface Member {
-  id: number;
-  name: string;
-  email: string;
-  role: 'Owner' | 'Admin' | 'User' | 'Ophthalmologist';
-  initials: string;
-}
 
 @Component({
   selector: 'app-members',
@@ -32,59 +25,45 @@ export class MembersComponent implements OnInit {
   workforceMembers: WorkspaceMembers[] = [];
   sendingInvite = false;
 
+  workforceMembers$ = this.store.select(selectWorkspaceMembers);
+
   sendInviteForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     role: new FormControl('Admin', [Validators.required]),
   });
 
-  activeTab: 'All Members' | 'Owner' | 'Admin' | 'User' | 'ophthalmologist' =
-    'All Members';
-  members: Member[] = [
-    {
-      id: 1,
-      name: 'Samuel Gyimah',
-      email: 'sg.gyimah@andurar.com',
-      role: 'Owner',
-      initials: 'SG',
-    },
-    {
-      id: 2,
-      name: 'Andurar',
-      email: 'info@andurar.com',
-      role: 'Admin',
-      initials: 'A',
-    },
-  ];
+  activeTab: 'All Members' | 'Owner' | 'Admin' | 'Annotator' = 'All Members';
 
   constructor(
     private authService: AuthService,
     private toast: HotToastService,
-    private store: Store
+    private store: Store,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadWorkspaceMembers());
     this.store.select(selectWorkspaceMembers).subscribe((members) => {
       this.workforceMembers = members;
+      console.log(members);
     });
   }
 
-  setActiveTab(
-    tab: 'All Members' | 'Owner' | 'Admin' | 'User' | 'ophthalmologist'
-  ): void {
+  setActiveTab(tab: 'All Members' | 'Owner' | 'Admin' | 'Annotator'): void {
     this.activeTab = tab;
   }
 
-  getFilteredMembers(): Member[] {
+  getFilteredMembers(): WorkspaceMembers[] {
     if (this.activeTab === 'All Members') {
-      return this.members;
+      return this.workforceMembers;
     } else {
-      return this.members.filter((member) => member.role === this.activeTab);
+      return this.workforceMembers.filter(
+        (member) => member.role.toLowerCase() === this.activeTab.toLowerCase()
+      );
     }
   }
 
   sendInvite(): void {
-    console.log(this.sendInviteForm.value);
     if (this.sendInviteForm.invalid) return;
     this.sendingInvite = true;
 
@@ -93,12 +72,11 @@ export class MembersComponent implements OnInit {
         this.sendingInvite = false;
         this.store.dispatch(loadWorkspaceMembers());
         this.toast.success('Invite sent successfully');
-        console.log(res);
+        this.sendInviteForm.reset();
       },
       error: (err) => {
         this.sendingInvite = false;
         this.toast.error('Something went wrong');
-        console.log(err);
       },
     });
   }

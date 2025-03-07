@@ -42,27 +42,15 @@
     </button>
 
     <button
-      (click)="setActiveTab('User')"
+      (click)="setActiveTab('Annotator')"
       [ngClass]="{
-        'text-blue-600 border-blue-500': activeTab === 'User',
+        'text-blue-600 border-blue-500': activeTab === 'Annotator',
         'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
-          activeTab !== 'User'
+          activeTab !== 'Annotator'
       }"
       class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
     >
-      User
-    </button>
-
-    <button
-      (click)="setActiveTab('ophthalmologist')"
-      [ngClass]="{
-        'text-blue-600 border-blue-500': activeTab === 'ophthalmologist',
-        'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300':
-          activeTab !== 'ophthalmologist'
-      }"
-      class="ml-8 px-4 py-2 border-b-2 font-medium text-sm focus:outline-none"
-    >
-      Ophthalmologist
+      Annotator
     </button>
   </div>
 </div>
@@ -90,9 +78,8 @@
         formControlName="role"
         class="appearance-none h-full px-4 py-2 bg-white rounded-md border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
-        <option value="Admin">Admin</option>
-        <option value="User">User</option>
-        <option value="Ophthalmologist">Ophthalmologist</option>
+        <option value="ADMIN">Admin</option>
+        <option value="ANNOTATOR">Annotator</option>
       </select>
       <div
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -111,6 +98,7 @@
 
     <button
       class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      [disabled]="sendingInvite"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -135,13 +123,13 @@
     class="flex items-center py-4 border-b border-gray-200"
   >
     <div
-      class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white"
+      class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white uppercase"
     >
-      {{ member.initials }}
+      {{ member.firstName[0] }}{{ member.firstName[1] }}
     </div>
     <div class="ml-4 flex-1">
       <h3 class="text-sm font-medium text-gray-900">
-        {{ member.name }}
+        {{ member.firstName }} {{ member.lastName }}
       </h3>
       <p class="text-sm text-gray-500">{{ member.email }}</p>
     </div>
@@ -151,9 +139,8 @@
         class="appearance-none px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
         <option value="Owner">Owner</option>
-        <option value="Admin">Admin</option>
-        <option value="User">User</option>
-        <option value="Ophthalmologist">Ophthalmologist</option>
+        <option value="ADMIN">Admin</option>
+        <option value="ANNOTATOR">Annotator</option>
       </select>
       <div
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"

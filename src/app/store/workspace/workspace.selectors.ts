@@ -1,8 +1,8 @@
-import { WorkspaceState } from './workspace.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { WorkspaceState } from './workspace.reducer';
 
 export const selectWorkspaceMembersState =
-  createFeatureSelector<WorkspaceState>('datasets');
+  createFeatureSelector<WorkspaceState>('workspace');
 
 // * All workspace members
 export const selectWorkspaceMembersLoading = createSelector(

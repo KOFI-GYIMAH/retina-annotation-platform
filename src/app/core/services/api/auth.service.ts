@@ -12,7 +12,15 @@ export class AuthService {
     return this.apiConfigService.un_post('/auth/login', payload);
   }
 
+  register(payload: any): Observable<any> {
+    return this.apiConfigService.un_post('/users/register', payload);
+  }
+
   sendInvite(payload: { email: string; role: string }): Observable<any> {
     return this.apiConfigService.post('/invitations/invite', payload);
+  }
+
+  getInviteInfo(token: string): Observable<any> {
+    return this.apiConfigService.un_get(`/invitations/${token}`);
   }
 }

@@ -48,12 +48,12 @@ export class AddDatasetComponent implements OnInit {
         this.toast.success(
           `Dataset ${this.newDatasetName} created successfully`
         );
-        this;
         this.loading = false;
         this.visible = false;
         this.newDatasetName = '';
       },
       error: (err) => {
+        this.loading = false;
         this.toast.error('Something went wrong');
         this.loading = false;
       },

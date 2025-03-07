@@ -9,7 +9,7 @@ export class UserService {
   constructor(private apiConfigService: APIConfigService) {}
 
   getWorkspaceMembers(): Observable<any> {
-    return this.apiConfigService.get('/workspace/members');
+    return this.apiConfigService.get('/users/all');
   }
 
   sendInvite(payload: { email: string; role: string }): Observable<any> {

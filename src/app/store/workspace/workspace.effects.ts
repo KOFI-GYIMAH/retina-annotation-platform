@@ -9,14 +9,14 @@ import { selectWorkspaceMembers } from './workspace.selectors';
 import * as workspaceActions from './workspace.actions';
 
 @Injectable()
-export class DatasetsEffect {
+export class WorkspaceEffect {
   constructor(
     private actions$: Actions,
     private userService: UserService,
     private store: Store
   ) {}
 
-  loadWorkforceMembers$ = createEffect(() =>
+  loadWorkspaceMembers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(workspaceActions.loadWorkspaceMembers),
       withLatestFrom(this.store.select(selectWorkspaceMembers)),
@@ -25,9 +25,11 @@ export class DatasetsEffect {
           return of(workspaceActions.retainWorkspaceMembers());
         } else {
           return this.userService.getWorkspaceMembers().pipe(
-            map((members: any) =>
-              workspaceActions.loadWorkspaceMembersSuccess({ members })
-            ),
+            map((members: any) => {
+              return workspaceActions.loadWorkspaceMembersSuccess({
+                members,
+              });
+            }),
             catchError((error) =>
               of(workspaceActions.loadWorkspaceMembersFailure({ error }))
             )

@@ -80,4 +80,18 @@ export class APIConfigService {
     };
     return this.http.post<T>(`${this.baseURL}${url}`, body, options);
   }
+
+  un_get<T>(
+    url: string,
+    params?: HttpParams,
+    headers?: HttpHeaders
+  ): Observable<T> {
+    const options = {
+      params,
+      headers: new HttpHeaders({
+        ...headers,
+      }),
+    };
+    return this.http.get<T>(`${this.baseURL}${url}`, options);
+  }
 }

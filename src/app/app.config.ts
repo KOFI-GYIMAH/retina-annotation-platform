@@ -16,7 +16,12 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
-import { DatasetsEffect, metaReducers, reducers } from '@store/index';
+import {
+  DatasetsEffect,
+  WorkspaceEffect,
+  metaReducers,
+  reducers,
+} from '@store/index';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 
@@ -42,7 +47,7 @@ export const appConfig: ApplicationConfig = {
       inputVariant: 'filled',
     }),
     provideStore(reducers, { metaReducers }),
-    provideEffects(DatasetsEffect),
+    provideEffects(DatasetsEffect, WorkspaceEffect),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

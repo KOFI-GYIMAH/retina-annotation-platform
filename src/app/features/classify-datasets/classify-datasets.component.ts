@@ -36,7 +36,7 @@ export class ClassifyDatasetsComponent implements AfterViewInit {
 
   thumbnails = [
     '/assets/images/16_left (1).jpeg',
-    '/assets/images/16_left.jpeg',
+    '/assets/imaeges/16_left.jpeg',
     '/assets/images/1663_right.jpeg',
     '/assets/images/1663_right.jpeg',
   ];

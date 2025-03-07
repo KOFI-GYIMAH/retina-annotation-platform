@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { ConsensusReviewComponent } from '@app/consensus-review/consensus-review.component';
+import { ReviewImagesComponent } from '@app/consensus-review/review-images/review-images.component';
 import { ClassesComponent } from './features/classes/classes.component';
 import { ClassifyDatasetsComponent } from './features/classify-datasets/classify-datasets.component';
 import { DatasetDetailsComponent } from './features/datasets/dataset-details/dataset-details.component';
@@ -47,12 +49,15 @@ export const routes: Routes = [
       {
         path: 'datasets/classify/:id',
         component: ClassifyDatasetsComponent,
+        data: { title: 'Datasets' },
       },
       {
         path: '',
         component: DashboardLayoutComponent,
         children: [
           { path: 'datasets', component: DatasetComponent },
+          { path: 'consensus-review', component: ConsensusReviewComponent },
+          { path: 'consensus-review/:id', component: ReviewImagesComponent },
           { path: 'datasets/:id', component: DatasetDetailsComponent },
           { path: 'classes', component: ClassesComponent },
         ],

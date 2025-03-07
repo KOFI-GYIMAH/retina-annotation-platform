@@ -1,105 +1,80 @@
-<header class="mr-10">
-  <div class="flex items-center justify-between py-4">
-    <div class="flex items-center gap-4">
-      <h1 class="text-md font-medium text-gray-600">Datasets</h1>
-      <h1 class="text-md font-medium text-gray-600">Diabetic Retinopathy</h1>
-    </div>
-    <app-upload-dataset />
-  </div>
-</header>
-
-<div class="bg-white rounded-lg shadow-2xl h-full mb-10 mr-10">
-  <div>
-    <div class="flex items-center justify-between px-6 py-2">
-      <div class="flex space-x-8 text-sm py-2">
-        <div
-          class="text-gray-700 border-b-2 border-transparent cursor-pointer hover:text-blue-600 hover:border-blue-600"
-        >
-          Data
-        </div>
-        <div class="text-blue-600 border-b-2 border-blue-600 cursor-pointer">
-          Classes
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-between px-6 py-2">
-      <div class="flex items-center space-x-2">
-        <span class="text-sm font-medium">Date added</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-          />
-        </svg>
-      </div>
-      <div class="flex items-center space-x-3">
-        <a 
-          [routerLink]="['/datasets/classify/234324']"
-        >Annotate</a>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div
-      class="grid grid-cols-1 gap-8 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-"
-    >
-      <div
-        *ngFor="let image of images"
-        class="relative overflow-hidden bg-white rounded-md shadow-sm group"
+<div class="bg-white rounded-lg shadow-2xl h-full overflow-hidden">
+  <div
+    class="flex items-center justify-between gap-5 py-4 px-6 bg-gradient-to-r from-blue-50 to-purple-50"
+  >
+    <div class="flex items-center space-x-4">
+      <span
+        class="text-sm font-medium text-gray-700 bg-white px-3 py-1 rounded-full shadow-sm"
       >
-        <div class="absolute top-2 left-2">
-          <input
-            type="checkbox"
-            [checked]="image.selected"
-            (click)="toggleSelection(image)"
-            class="w-5 h-5 form-checkbox text-blue-600"
-          />
-        </div>
-        <div class="absolute top-2 right-2">
-          <button
-            class="p-1 text-gray-500 bg-white rounded-full opacity-0 group-hover:opacity-100 hover:text-gray-700"
+        2 annotated
+      </span>
+      <span
+        class="text-sm font-medium text-gray-700 bg-white px-3 py-1 rounded-full shadow-sm"
+      >
+        10 unannotated
+      </span>
+    </div>
+    <div class="flex items-center space-x-3">
+      <a
+        [routerLink]="['/datasets/classify/234324']"
+        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-300"
+      >
+        Annotate
+      </a>
+    </div>
+  </div>
+
+  <div
+    class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+  >
+    <div
+      *ngFor="let image of images"
+      class="relative overflow-hidden bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 group"
+    >
+      <div class="absolute top-3 left-3">
+        <input
+          type="checkbox"
+          [checked]="image.selected"
+          (click)="toggleSelection(image)"
+          class="w-5 h-5 form-checkbox text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+        />
+      </div>
+
+      <div class="absolute top-3 right-3">
+        <button
+          class="p-1.5 text-gray-500 bg-white rounded-full opacity-0 group-hover:opacity-100 hover:text-gray-700 transition-opacity duration-300"
+          aria-label="More options"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-              />
-            </svg>
-          </button>
-        </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+            />
+          </svg>
+        </button>
+      </div>
 
-        <div class="aspect-w-1 aspect-h-1 bg-gray-100">
-          <img
-            [src]="image.src"
-            [alt]="image.name"
-            class="object-contain w-full h-full"
-          />
-        </div>
+      <div class="aspect-w-1 aspect-h-1 bg-gray-100">
+        <img
+          [src]="image.src"
+          [alt]="image.name"
+          class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
 
-        <div class="p-3">
-          <h3 class="text-sm font-medium text-gray-900 truncate">
-            {{ image.name }}
-          </h3>
-          <p class="mt-1 text-xs text-gray-500">Added on {{ image.date }}</p>
-        </div>
+      <div class="p-4">
+        <h3 class="text-sm font-semibold text-gray-900 truncate">
+          {{ image.name }}
+        </h3>
+        <p class="mt-1 text-xs text-gray-500">Added on {{ image.date }}</p>
       </div>
     </div>
   </div>

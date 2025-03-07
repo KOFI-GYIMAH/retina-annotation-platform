@@ -9,7 +9,6 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  licenceId: string | null;
   middleName: string;
   modifiedAt: string;
   modifiedBy: string;

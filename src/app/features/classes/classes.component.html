@@ -1,115 +1,296 @@
-<header class="mr-10">
-  <div class="flex items-center justify-between py-4">
-    <div class="flex items-center gap-4">
-      <h1 class="text-md font-medium text-gray-600">Datasets</h1>
-    </div>
-    <!-- <app-add-dataset /> -->
-  </div>
-</header>
-
-<div class="bg-white rounded-lg shadow-2xl h-full mb-10 mr-10">
-  <!-- <div class="flex justify-between items-center border-b pb-4 mb-4">
-    <h1 class="text-xl font-bold">Create Project</h1>
-    <div>
-      <button class="bg-red-500 text-white px-4 py-2 rounded-md mr-2">
-        Delete
-      </button>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
-    </div>
-  </div> -->
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-    <!-- Left Panel -->
-    <div>
-      <h2 class="text-sm font-semibold mb-2">Labeling Interface</h2>
-      <!-- <button class="border px-4 py-2 rounded-md text-gray-600">
-        Browse Templates
-      </button> -->
-
-      <!-- <div class="mt-4">
-        <label class="block font-semibold">Configure data</label>
-        <div class="flex items-center mt-2">
-          <select class="border rounded-md px-2 py-2 mr-2">
-            <option value="manual">Set manually</option>
-          </select>
-          <input
-            type="text"
-            placeholder="$image"
-            class="border px-3 py-2 rounded-md w-full"
-          />
-        </div>
-      </div> -->
-
-      <div class="mt-4">
-        <label class="block font-semibold">Add choices</label>
-        <input
-          class="border w-full px-3 py-2 rounded-md"
-          placeholder="Enter labels..."
-        />
-        <button class="mt-2 bg-gray-700 text-white px-4 py-2 rounded-md">
-          Add
-        </button>
+<div class="bg-white rounded-lg shadow-2xl h-full">
+  <!-- Main content area -->
+  <div class="flex-1 p-6 bg-gray-50 overflow-auto">
+    <!-- Toolbar -->
+    <div class="mb-4 flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-semibold">Available Classification Classes</h2>
+        <p class="text-sm text-gray-500">
+          Define the classification options that will be available to annotators
+        </p>
       </div>
-
-      <div class="mt-4">
-        <label class="block font-semibold">Choices (3)</label>
-        <ul class="list-disc pl-5">
-          <li>Moderate</li>
-        </ul>
-      </div>
-
-      <div class="mt-4">
-        <label class="block font-semibold">Configure settings</label>
-        <!-- <div class="mt-2">
-          <label class="block">Width of region borders</label>
-          <input
-            type="number"
-            class="border px-2 py-1 rounded-md w-full"
-            value="1"
-          />
-        </div> -->
-        <div class="mt-2">
-          <label class="inline-flex items-center">
-            <input type="checkbox" checked class="mr-2" /> Allow image zoom
-            (ctrl+wheel)
-          </label>
-        </div>
-        <div>
-          <label class="inline-flex items-center">
-            <input type="checkbox" checked class="mr-2" /> Show controls to zoom
-            in and out
-          </label>
-        </div>
-        <div>
-          <label class="inline-flex items-center">
-            <input type="checkbox" checked class="mr-2" /> Show controls to
-            rotate image
-          </label>
-        </div>
-      </div>
+      <p-button label="Add New Class" icon="pi pi-plus" (onClick)="openNew()">
+      </p-button>
     </div>
 
-    <!-- Right Panel -->
-    <div>
-      <h2 class="text-lg font-semibold mb-2">UI Preview</h2>
-      <div class="border rounded-lg overflow-hidden">
-        <img
-          src="/assets/images/1663_right.jpeg"
-          alt="Preview"
-          class="w-full"
-        />
-      </div>
-      <!-- <div class="mt-4">
-        <label class="inline-flex items-center">
-          <input type="checkbox" class="mr-2" /> Adult content
-        </label>
-        <label class="inline-flex items-center block mt-2">
-          <input type="checkbox" class="mr-2" /> Weapons
-        </label>
-        <label class="inline-flex items-center block mt-2">
-          <input type="checkbox" class="mr-2" /> Violence
-        </label>
-      </div> -->
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="flex justify-center py-8">
+      <!-- <p-progressSpinner></p-progressSpinner> -->
+    </div>
+
+    <!-- No classes state -->
+    <div
+      *ngIf="!loading && classes.length === 0"
+      class="bg-white rounded-lg shadow-sm p-8 text-center"
+    >
+      <i class="pi pi-exclamation-circle text-yellow-500 text-4xl mb-4"></i>
+      <h3 class="text-xl font-medium mb-2">
+        No Classification Classes Defined
+      </h3>
+      <p class="text-gray-600 mb-4">
+        Annotators need classification options to categorize images. Add your
+        first class to get started.
+      </p>
+      <p-button
+        label="Add First Classification Class"
+        icon="pi pi-plus"
+        (onClick)="openNew()"
+      >
+      </p-button>
+    </div>
+
+    <!-- Classes table -->
+    <div
+      *ngIf="!loading && classes.length > 0"
+      class="bg-white rounded-lg shadow-sm overflow-hidden"
+    >
+      <p-table
+        [value]="classes"
+        [paginator]="classes.length > 10"
+        [rows]="10"
+        [rowHover]="true"
+        styleClass="p-datatable-sm"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 80px" class="text-center">Level</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th style="width: 120px">Color</th>
+            <th style="width: 100px" class="text-center">Default</th>
+            <th style="width: 120px">Last Updated</th>
+            <th style="width: 120px"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-class>
+          <tr>
+            <td class="text-center font-semibold">{{ class.level }}</td>
+            <td>{{ class.name }}</td>
+            <td class="text-gray-600">{{ class.description }}</td>
+            <td>
+              <!-- <p-tag
+                [value]="class.name"
+                [severity]="getSeverityClass(class.color)"
+                [rounded]="true"
+              >
+              </p-tag> -->
+            </td>
+            <td class="text-center">
+              <i *ngIf="class.isDefault" class="pi pi-check text-green-500"></i>
+              <span *ngIf="!class.isDefault" class="text-gray-400">-</span>
+            </td>
+            <td>{{ class.updatedAt | date : "shortDate" }}</td>
+            <td>
+              <div class="flex justify-center gap-2">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-text"
+                  (click)="editClass(class)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  [disabled]="class.isDefault"
+                  (click)="deleteClass(class)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>
+
+<!-- Class dialog -->
+<p-dialog
+  [(visible)]="displayDialog"
+  [style]="{ width: '450px' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="true"
+  [header]="
+    isNewClass ? 'Add New Classification Class' : 'Edit Classification Class'
+  "
+>
+  <form [formGroup]="classForm" (ngSubmit)="saveClass()">
+    <div class="field mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
+        >Class Name*</label
+      >
+      <input
+        id="name"
+        type="text"
+        pInputText
+        formControlName="name"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            classForm.controls['name'].invalid &&
+            classForm.controls['name'].touched
+        }"
+        placeholder="e.g., Mild NPDR"
+      />
+      <small
+        *ngIf="
+          classForm.controls['name'].invalid &&
+          classForm.controls['name'].touched
+        "
+        class="p-error block mt-1"
+      >
+        Name is required and should be less than 50 characters
+      </small>
+    </div>
+
+    <div class="field mb-4">
+      <label
+        for="description"
+        class="block text-sm font-medium text-gray-700 mb-1"
+        >Description</label
+      >
+      <textarea
+        id="description"
+        pInputTextarea
+        formControlName="description"
+        rows="3"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            classForm.controls['description'].invalid &&
+            classForm.controls['description'].touched
+        }"
+        placeholder="Describe the characteristics of this classification"
+      >
+      </textarea>
+      <small
+        *ngIf="
+          classForm.controls['description'].invalid &&
+          classForm.controls['description'].touched
+        "
+        class="p-error block mt-1"
+      >
+        Description should be less than 200 characters
+      </small>
+    </div>
+
+    <div class="field mb-4">
+      <label for="level" class="block text-sm font-medium text-gray-700 mb-1"
+        >Severity Level*</label
+      >
+      <p-inputNumber
+        id="level"
+        formControlName="level"
+        [showButtons]="true"
+        [min]="0"
+        buttonLayout="horizontal"
+        spinnerMode="horizontal"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-secondary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        class="w-full"
+      >
+      </p-inputNumber>
+      <small
+        *ngIf="
+          classForm.controls['level'].invalid &&
+          classForm.controls['level'].touched
+        "
+        class="p-error block mt-1"
+      >
+        Severity level is required and must be 0 or higher
+      </small>
+      <small
+        *ngIf="
+          !isUniqueLevel(classForm.value.level) &&
+          classForm.controls['level'].touched
+        "
+        class="p-error block mt-1"
+      >
+        This severity level is already in use
+      </small>
+    </div>
+
+    <div class="field mb-4">
+      <label for="color" class="block text-sm font-medium text-gray-700 mb-1"
+        >Color*</label
+      >
+      <p-dropdown
+        id="color"
+        formControlName="color"
+        [options]="colorOptions"
+        optionLabel="name"
+        optionValue="value"
+        placeholder="Select a color"
+        [showClear]="false"
+        class="w-full"
+      >
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="classForm.value.color" class="flex items-center">
+            <!-- <p-tag
+              [value]="'Sample Text'"
+              [severity]="getSeverityClass(classForm.value.color)"
+              [rounded]="true"
+              class="mr-2"
+            >
+            </p-tag> -->
+            <!-- <span
+              >{{colorOptions.find(o => o.value === classForm.value.color)?.name}}</span
+            > -->
+          </div>
+        </ng-template>
+        <ng-template let-color pTemplate="item">
+          <!-- <p-tag
+            [value]="'Sample Text'"
+            [severity]="getSeverityClass(color.value)"
+            [rounded]="true"
+            class="mr-2"
+          >
+          </p-tag> -->
+          <span>{{ color.name }}</span>
+        </ng-template>
+      </p-dropdown>
+    </div>
+
+    <div class="field-checkbox mb-4">
+      <p-checkbox
+        formControlName="isDefault"
+        [binary]="true"
+        inputId="isDefault"
+      >
+      </p-checkbox>
+      <label for="isDefault" class="ml-2 text-sm"
+        >Set as default classification</label
+      >
+      <small class="block text-gray-500 mt-1"
+        >Only one class can be set as default</small
+      >
+    </div>
+
+    <div class="flex justify-end gap-2 pt-3">
+      <p-button
+        type="button"
+        label="Cancel"
+        styleClass="p-button-text"
+        (onClick)="cancelDialog()"
+      >
+      </p-button>
+      <p-button
+        type="submit"
+        label="Save"
+        icon="pi pi-check"
+        [disabled]="classForm.invalid || !isUniqueLevel(classForm.value.level)"
+      >
+      </p-button>
+    </div>
+  </form>
+</p-dialog>
+
+<!-- <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-toast></p-toast> -->

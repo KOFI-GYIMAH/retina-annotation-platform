@@ -19,16 +19,12 @@
     </div>
 
     <div class="flex justify-end gap-2 mt-5">
+      <p-button label="Cancel" severity="secondary" (click)="visible = false" />
       <p-button
-        label="Cancel"
-        severity="secondary"
-        (click)="visible = false"
-        class="w-full"
-      />
-      <p-button
-        label="Create New Dataset"
-        (click)="visible = false"
-        class="w-full"
+        label="Create Dataset"
+        (click)="onSubmit()"
+        [loading]="loading"
+        [disabled]="loading"
       />
     </div>
   </p-dialog>
