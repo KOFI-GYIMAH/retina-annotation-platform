@@ -7,10 +7,17 @@
   @tailwind utilities;
   @tailwind utilities;
 } */
+/* @import "tailwindcss"; */
+
+/* @import 'primeng/resources/themes/aura-light-blue/theme.css';
+@import 'primeng/resources/primeng.css'; */
 @import "tailwindcss";
+/* @tailwind base; */
+/* @tailwind tailwindcss;
+@tailwind utilities; */
 
 html {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .p-dialog-title {
