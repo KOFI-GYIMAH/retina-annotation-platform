@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
+ */
+ @import "tailwindcss";
+@import "tailwindcss-primeui";
 
 html {
   background-color: #f2f2f2;
