@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow-2xl h-full overflow-hidden">
+<div class="bg-white rounded-lg shadow-2xl overflow-hidden">
   <div
     class="flex items-center justify-between gap-5 py-4 px-6 bg-gradient-to-r from-blue-50 to-purple-50"
   >
@@ -31,50 +31,48 @@
       *ngFor="let image of images"
       class="relative overflow-hidden bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 group"
     >
-      <div class="absolute top-3 left-3">
-        <input
-          type="checkbox"
-          [checked]="image.selected"
-          (click)="toggleSelection(image)"
-          class="w-5 h-5 form-checkbox text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-        />
-      </div>
-
-      <div class="absolute top-3 right-3">
-        <button
-          class="p-1.5 text-gray-500 bg-white rounded-full opacity-0 group-hover:opacity-100 hover:text-gray-700 transition-opacity duration-300"
-          aria-label="More options"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+      <div
+        class="border border-gray-200 rounded-md overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md"
+      >
+        <div class="relative">
+          <img
+            [src]="image.src"
+            alt="Retina scan"
+            class="w-full aspect-square object-cover"
+          />
+          <div
+            class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 text-xs flex justify-between"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <div class="aspect-w-1 aspect-h-1 bg-gray-100">
-        <img
-          [src]="image.src"
-          [alt]="image.name"
-          class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-
-      <div class="p-4">
-        <h3 class="text-sm font-semibold text-gray-900 truncate">
-          {{ image.name }}
-        </h3>
-        <p class="mt-1 text-xs text-gray-500">Added on {{ image.date }}</p>
+            <span>Severity:</span>
+            <span
+              class="font-medium"
+              [ngClass]="{
+                'text-green-500': image.severity === 'No DR',
+                'text-blue-600': image.severity === 'Mild NPDR',
+                'text-orange-500': image.severity === 'Moderate NPDR',
+                'text-red-600': image.severity === 'Severe NPDR',
+                'text-red-700': image.severity === 'PDR',
+                'text-gray-300': image.severity === 'unclassified'
+              }"
+            >
+              {{ image.severity }}
+            </span>
+          </div>
+        </div>
+        <div class="p-3">
+          <div class="font-medium text-sm truncate">
+            {{ image.name }}
+          </div>
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>{{ getRelativeDate(image.date) }}</span>
+            <span *ngIf="image.underReview">Review</span>
+            <span
+              *ngIf="!image.underReview && image.severity !== 'unclassified'"
+            >
+              Annotated
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

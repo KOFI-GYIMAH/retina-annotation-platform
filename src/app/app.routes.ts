@@ -6,6 +6,7 @@ import { ClassesComponent } from './features/classes/classes.component';
 import { ClassifyDatasetsComponent } from './features/classify-datasets/classify-datasets.component';
 import { DatasetDetailsComponent } from './features/datasets/dataset-details/dataset-details.component';
 import { DatasetComponent } from './features/datasets/dataset.component';
+import { OverviewComponent } from '@app/overview/overview.component';
 
 // * Layouts
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
@@ -55,6 +56,7 @@ export const routes: Routes = [
         path: '',
         component: DashboardLayoutComponent,
         children: [
+          { path: 'overview', component: OverviewComponent },
           { path: 'datasets', component: DatasetComponent },
           { path: 'consensus-review', component: ConsensusReviewComponent },
           { path: 'consensus-review/:id', component: ReviewImagesComponent },
