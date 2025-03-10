@@ -37,6 +37,9 @@
           },
           "configurations": {
             "production": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",

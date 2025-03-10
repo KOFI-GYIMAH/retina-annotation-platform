@@ -57,7 +57,7 @@ export class LoginComponent {
         this.store.dispatch(loadUserRecordSuccess({ user: res.data }));
 
         this.toast.success('Login successful!!');
-        this.router.navigate(['/datasets']);
+        this.router.navigate(['/overview']);
       },
       error: (err) => {
         this.loading = false;
