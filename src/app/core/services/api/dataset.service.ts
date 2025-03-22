@@ -17,4 +17,15 @@ export class DatasetService {
   getDatasets(): Observable<any> {
     return this.apiConfigService.get('/datasets/all');
   }
+
+  getClasses(dataset: string): Observable<any> {
+    return this.apiConfigService.get(`/classes/${dataset}`);
+  }
+
+  annotateImage(image_id: number, payload: any) {
+    return this.apiConfigService.post(
+      `/annotations/submit/${image_id}`,
+      payload
+    );
+  }
 }

@@ -1,5 +1,4 @@
 <div class="flex h-screen bg-gray-100">
-  <!-- Thumbnail sidebar -->
   <div class="w-24 bg-white p-2 space-y-2">
     <h5 class="text-sm font-medium text-center">4 Images</h5>
     <div
@@ -15,9 +14,7 @@
     </div>
   </div>
 
-  <!-- Main viewer -->
   <div class="flex-1 relative">
-    <!-- Top toolbar -->
     <div
       class="absolute top-0 left-0 right-0 bg-white border-b border-gray-200 p-2 flex items-center justify-between"
     >
@@ -70,7 +67,6 @@
       </div>
     </div>
 
-    <!-- Image container -->
     <div
       #imageContainer
       class="absolute inset-0 mt-12 bg-black overflow-hidden"
@@ -91,10 +87,10 @@
     </div>
   </div>
 
-  <!-- Right sidebar -->
-  <div class="w-64 bg-white border-l border-gray-100 shadow-lg p-6 flex flex-col h-full">
+  <div
+    class="w-64 bg-white border-l border-gray-100 shadow-lg p-6 flex flex-col h-full"
+  >
     <div class="flex-1 space-y-6">
-      <!-- Assessment Section -->
       <div class="bg-gray-50 rounded-xl p-4 space-y-3">
         <h3
           class="text-[0.7rem] font-medium text-gray-700 uppercase tracking-wide mb-4"
@@ -102,7 +98,6 @@
           Severity Assessment
         </h3>
 
-        <!-- Mild Radio -->
         <div class="group flex items-center">
           <div class="relative flex items-center">
             <input
@@ -123,7 +118,6 @@
           </div>
         </div>
 
-        <!-- Moderate Radio -->
         <div class="group flex items-center">
           <div class="relative flex items-center">
             <input
@@ -145,7 +139,6 @@
         </div>
       </div>
 
-      <!-- Comments Section -->
       <div class="space-y-3">
         <label
           for="comment"
@@ -163,11 +156,10 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
       <button
         (click)="onSubmit()"
         class="w-full bg-blue-600 text-white rounded-xl py-3 px-4 font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform active:scale-98 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="!currentImage.severity"
+        [disabled]="!currentImage.severity || loading"
       >
         <div class="flex items-center justify-center space-x-2">
           <span>Submit Assessment</span>

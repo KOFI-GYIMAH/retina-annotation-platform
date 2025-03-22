@@ -1,17 +1,24 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  ViewChild,
-  AfterViewInit,
   HostListener,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { HotToastService } from '@ngxpert/hot-toast';
+import { DatasetService } from '@services/api/dataset.service';
+import { loadClasses } from '@store/classes/classes.actions';
+import { selectClasses } from '@store/classes/classes.selectors';
 
 interface ImageData {
   url: string;
   comment: string;
   severity: 'mild' | 'moderate' | null;
+  id: number;
 }
 
 @Component({
@@ -20,7 +27,10 @@ interface ImageData {
   templateUrl: './classify-datasets.component.html',
   styleUrl: './classify-datasets.component.css',
 })
-export class ClassifyDatasetsComponent implements AfterViewInit {
+export class ClassifyDatasetsComponent implements AfterViewInit, OnInit {
+  classes: any[] = [];
+  loading: boolean = false;
+
   @ViewChild('imageContainer') imageContainer!: ElementRef;
   @ViewChild('mainImage') mainImage!: ElementRef;
 
@@ -36,7 +46,7 @@ export class ClassifyDatasetsComponent implements AfterViewInit {
 
   thumbnails = [
     '/assets/images/16_left (1).jpeg',
-    '/assets/imaeges/16_left.jpeg',
+    '/assets/images/16_left.jpeg',
     '/assets/images/1663_right.jpeg',
     '/assets/images/1663_right.jpeg',
   ];
@@ -45,24 +55,41 @@ export class ClassifyDatasetsComponent implements AfterViewInit {
     {
       url: '/assets/images/16_left (1).jpeg',
       comment: '',
-    severity: null
+      severity: null,
+      id: 1,
     },
     {
       url: '/assets/images/16_left.jpeg',
       comment: '',
-    severity: null
+      severity: null,
+      id: 2,
     },
     {
       url: '/assets/images/1663_right.jpeg',
       comment: '',
-    severity: null
+      severity: null,
+      id: 3,
     },
     {
       url: '/assets/images/1663_right.jpeg',
       comment: '',
-    severity: null
+      severity: null,
+      id: 4,
     },
   ];
+
+  constructor(
+    private store: Store,
+    private datasetService: DatasetService,
+    private toast: HotToastService
+  ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(loadClasses({ class_category: 'all' }));
+    this.store.select(selectClasses).subscribe((classes) => {
+      this.classes = classes;
+    });
+  }
 
   isFormValid(): boolean {
     return !!this.currentImage.severity;
@@ -152,12 +179,29 @@ export class ClassifyDatasetsComponent implements AfterViewInit {
   }
 
   onSubmit() {
-    // Here you could add API call to save the data
-    console.log('Saving data for image', this.selectedIndex, this.currentImage);
+    this.loading = true;
+    const payload = {
+      annotationType: 'IMAGE_CLASSIFICATION',
+      data: {
+        label: this.currentImage.severity,
+      },
+      comment: this.currentImage.comment,
+    };
 
-    // Move to next image if available
-    if (this.selectedIndex < this.images.length - 1) {
-      this.nextImage();
-    }
+    this.datasetService.annotateImage(this.currentImage.id, payload).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.toast.success('Image annotated successfully');
+
+        // * Move to next image if available
+        if (this.selectedIndex < this.images.length - 1) {
+          this.nextImage();
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.toast.error('Something went wrong');
+      },
+    });
   }
 }

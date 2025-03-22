@@ -10,8 +10,11 @@
     <app-add-dataset />
   </div>
 
-  <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div
+    class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+  >
     <a
+      *ngFor="let dataset of datasets"
       [routerLink]="['/datasets', 12345]"
       class="bg-white rounded-lg border border-gray-200 overflow-hidden"
     >
@@ -35,7 +38,9 @@
         </div>
       </div>
       <div class="p-4">
-        <h3 class="font-semibold mb-4">Diabetic Retinopathy</h3>
+        <h3 class="font-semibold mb-4 capitalize">
+          {{ dataset.name }}
+        </h3>
         <div class="flex items-center gap-4 text-sm text-gray-600">
           <span class="flex items-center gap-1">
             <svg
@@ -51,7 +56,7 @@
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            3 Items
+            {{ dataset.sampleImages.length || 0 }} Images
           </span>
           <span class="flex items-center gap-1">
             <svg
@@ -67,11 +72,16 @@
                 d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
               />
             </svg>
-            4 Classes
+            5 Classes
           </span>
         </div>
         <div class="mt-4 bg-gray-100 rounded-full h-2">
-          <div class="bg-blue-600 h-2 rounded-full" style="width: 30%"></div>
+          <div
+            class="bg-blue-600 h-2 rounded-full"
+            [style.width.%]="
+              (dataset.annotatedImageCount / dataset.imageCount) * 100
+            "
+          ></div>
         </div>
       </div>
     </a>

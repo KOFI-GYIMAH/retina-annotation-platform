@@ -4,7 +4,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="text-sm text-gray-500 mb-2">Total Images</div>
-          <div class="text-3xl font-semibold mb-1">846</div>
+          <div class="text-3xl font-semibold mb-1">
+            {{ metrics.totalImages }}
+          </div>
           <div
             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600"
           >
@@ -14,7 +16,9 @@
 
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="text-sm text-gray-500 mb-2">Annotated Images</div>
-          <div class="text-3xl font-semibold mb-1">623</div>
+          <div class="text-3xl font-semibold mb-1">
+            {{ metrics.annotatedImages }}
+          </div>
           <div
             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600"
           >
@@ -24,17 +28,21 @@
 
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="text-sm text-gray-500 mb-2">Pending Review</div>
-          <div class="text-3xl font-semibold mb-1">54</div>
+          <div class="text-3xl font-semibold mb-1">
+            {{ metrics.pendingReview }}
+          </div>
           <div
             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-600"
           >
-            6.4% of total
+            {{ metrics.pendingReviewPercentage }}% of total
           </div>
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <div class="text-sm text-gray-500 mb-2">Active Annotators</div>
-          <div class="text-3xl font-semibold mb-1">5</div>
+          <div class="text-3xl font-semibold mb-1">
+            {{ metrics.activeAnnotators }}
+          </div>
           <div
             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600"
           >
@@ -44,31 +52,101 @@
       </div>
 
       <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Datasets List -->
         <li
           *ngFor="let dataset of datasets"
-          class="p-2 rounded cursor-pointer bg-gray-200"
+          class="p-2 rounded cursor-pointer bg-gray-100"
         >
           <div class="flex justify-between items-center">
             <span class="text-sm font-medium">{{ dataset.name }}</span>
           </div>
           <div class="mt-1 w-full">
             <p-progressBar
-              [value]="dataset.progress"
+              [value]="(dataset.annotatedImageCount / dataset.imageCount) * 100"
               [showValue]="false"
               [style]="{ height: '0.5rem' }"
-            ></p-progressBar>
+            />
           </div>
           <div class="mt-1 text-xs text-gray-500 flex justify-between">
-            <span
-              >{{ dataset.completedImages }}/{{
-                dataset.totalImages
-              }}
-              images</span
-            >
-            <span>{{ dataset.progress }}%</span>
+            <span>
+              {{ dataset.annotatedImageCount }}/{{ dataset.imageCount }} images
+            </span>
+            <span>
+              {{ (dataset.annotatedImageCount / dataset.imageCount) * 100 }}%
+            </span>
+          </div>
+        </li>
+
+        <!-- Loading State -->
+        <li *ngIf="loadingDatasets">
+          <div class="bg-gray-100 p-4" *ngFor="let a of [1, 2, 3, 4]">
+            <div class="max-w-xl mx-auto">
+              <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="mb-3">
+                  <div class="h-7 bg-gray-200 rounded w-48 animate-pulse"></div>
+                </div>
+                <div class="relative pt-1">
+                  <div
+                    class="w-full h-2 bg-gray-200 rounded animate-pulse"
+                  ></div>
+                </div>
+                <div class="flex justify-between mt-2">
+                  <div class="h-5 bg-gray-200 rounded w-20 animate-pulse"></div>
+                  <div class="h-5 bg-gray-200 rounded w-10 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </li>
       </ul>
+
+      <!-- <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <li
+          *ngFor="let dataset of datasets"
+          class="p-2 rounded cursor-pointer bg-gray-100"
+        >
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium">{{ dataset.name }}</span>
+          </div>
+          <div class="mt-1 w-full">
+            <p-progressBar
+              [value]="(dataset.annotatedImageCount / dataset.imageCount) * 100"
+              [showValue]="false"
+              [style]="{ height: '0.5rem' }"
+            />
+          </div>
+          <div class="mt-1 text-xs text-gray-500 flex justify-between">
+            <span>
+              {{ dataset.annotatedImageCount }}/{{ dataset.imageCount }}
+              images
+            </span>
+            <span>
+              {{ (dataset.annotatedImageCount / dataset.imageCount) * 100 }}%
+            </span>
+          </div>
+        </li>
+
+        <div *ngIf="loadingDatasets">
+          <div class="bg-gray-100 p-4" *ngFor="let a of [1, 2, 3, 4]">
+            <div class="max-w-xl mx-auto">
+              <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="mb-3">
+                  <div class="h-7 bg-gray-200 rounded w-48 animate-pulse"></div>
+                </div>
+                <div class="relative pt-1">
+                  <div
+                    class="w-full h-2 bg-gray-200 rounded animate-pulse"
+                  ></div>
+                </div>
+                <div class="flex justify-between mt-2">
+                  <div class="h-5 bg-gray-200 rounded w-20 animate-pulse"></div>
+                  <div class="h-5 bg-gray-200 rounded w-10 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ul> -->
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { DatasetService } from '@services/api/dataset.service';
-import { loadDatasets } from '@store/datasets/datasets.actions';
+import { addToDatasetsList } from '@store/datasets/datasets.actions';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -43,8 +43,15 @@ export class AddDatasetComponent implements OnInit {
     this.loading = true;
 
     this.datasetService.createDataset(this.newDatasetName).subscribe({
-      next: (res) => {
-        this.store.dispatch(loadDatasets());
+      next: (res: any) => {
+        this.store.dispatch(
+          addToDatasetsList({
+            dataset: {
+              sampleImages: 0,
+              name: res.data.name,
+            },
+          })
+        );
         this.toast.success(
           `Dataset ${this.newDatasetName} created successfully`
         );

@@ -7,6 +7,9 @@ import {
   OnInit,
   PLATFORM_ID,
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { loadDatasets } from '@store/datasets/datasets.actions';
+import { selectDatasets } from '@store/datasets/datasets.selectors';
 import { getRelativeDate } from '@utils/date-utils';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
@@ -15,13 +18,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SidebarModule } from 'primeng/sidebar';
+import { MetricsService } from './../../core/services/api/metrics.service';
 
-interface Dataset {
-  id: number;
-  name: string;
-  progress: number;
+interface DashboardData {
+  activeAnnotators: number;
+  annotatedImages: number;
+  pendingReview: number;
+  pendingReviewPercentage: number;
   totalImages: number;
-  completedImages: number;
 }
 
 @Component({
@@ -84,36 +88,10 @@ export class OverviewComponent implements OnInit {
     },
   ];
 
-  datasets: Dataset[] = [
-    {
-      id: 1,
-      name: 'Volta Region Dataset',
-      progress: 65,
-      totalImages: 120,
-      completedImages: 78,
-    },
-    {
-      id: 2,
-      name: 'Greater Accra Region Dataset',
-      progress: 42,
-      totalImages: 98,
-      completedImages: 41,
-    },
-    {
-      id: 3,
-      name: 'Tema Community Dataset',
-      progress: 89,
-      totalImages: 76,
-      completedImages: 68,
-    },
-    {
-      id: 4,
-      name: 'Ashanti Region Dataset',
-      progress: 23,
-      totalImages: 145,
-      completedImages: 33,
-    },
-  ];
+  metrics: DashboardData = {} as DashboardData;
+
+  loadingDatasets: boolean = true;
+  datasets: any[] = [];
 
   data: any;
 
@@ -121,7 +99,11 @@ export class OverviewComponent implements OnInit {
 
   platformId = inject(PLATFORM_ID);
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    private store: Store,
+    private metricsService: MetricsService
+  ) {}
 
   getRelativeDate = getRelativeDate;
 
@@ -130,7 +112,21 @@ export class OverviewComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.store.dispatch(loadDatasets());
+    this.store.select(selectDatasets).subscribe((datasets) => {
+      this.datasets = datasets;
+      this.loadingDatasets = false;
+    });
     this.initChart();
+
+    this.getDashboardStats();
+  }
+
+  getDashboardStats() {
+    this.metricsService.getGlobalMetrics().subscribe((res) => {
+      console.log(res);
+      this.metrics = res.data;
+    });
   }
 
   initChart() {

@@ -39,5 +39,9 @@ export const datasetsReducer = createReducer(
     ...state,
     loading: false,
     error: null,
+  })),
+  on(DatasetsActions.addToDatasetsList, (state, { dataset }) => ({
+    ...state,
+    datasets: [dataset, ...state.datasets],
   }))
 );

@@ -10,4 +10,9 @@ export const loadDatasetsFailure = createAction(
   '[Datasets] Load Datasets Failure',
   props<{ error: any }>()
 );
+export const addToDatasetsList = createAction(
+  '[Datasets] Add to Datasets List',
+  props<{ dataset: any }>()
+);
+
 export const retainDatasets = createAction('[Datasets] Retain Datasets');

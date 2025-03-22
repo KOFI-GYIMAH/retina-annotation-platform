@@ -20,14 +20,14 @@ export class DatasetsEffect {
     this.actions$.pipe(
       ofType(datasetsActions.loadDatasets),
       withLatestFrom(this.store.select(selectDatasets)),
-      switchMap(([action, members]) => {
-        if (members && members.length > 0) {
+      switchMap(([action, datasets]) => {
+        if (datasets && datasets.length > 0) {
           return of(datasetsActions.retainDatasets());
         } else {
           return this.datasetService.getDatasets().pipe(
-            map((datasets: any) =>
-              datasetsActions.loadDatasetsSuccess({ datasets })
-            ),
+            map((datasets: any) => {
+              return datasetsActions.loadDatasetsSuccess({ datasets });
+            }),
             catchError((error) =>
               of(datasetsActions.loadDatasetsFailure({ error }))
             )
